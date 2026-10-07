@@ -3,7 +3,23 @@ header('Content-Type: application/json; charset=utf-8');
 try {
   $c=require __DIR__.'/config.php';
   $p=new PDO("mysql:host={$c['db_host']};dbname={$c['db_name']};charset=utf8mb4",$c['db_user'],$c['db_pass'],[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]);
-  $products=$p->query("SELECT id,name,category,price,image_url,image_url AS image,icon,details,featured FROM products WHERE active=1 ORDER BY featured DESC,id DESC")->fetchAll(PDO::FETCH_ASSOC);
+  $count=(int)$p->query("SELECT COUNT(*) FROM products")->fetchColumn();
+$seeded=(string)$p->query("SELECT COALESCE((SELECT setting_value FROM store_settings WHERE setting_key='demo_catalog_seeded' LIMIT 1),'0')")->fetchColumn();
+if($count<20 && $seeded!=='1'){
+  $sql=@file_get_contents(__DIR__.'/../database.sql');
+  if($sql!==false){
+    $start=strpos($sql,'-- Expanded demo catalog:');
+    $end=strpos($sql,'-- Premium storefront content controls');
+    if($start!==false && $end!==false){
+      $seedSql=substr($sql,$start,$end-$start);
+      $seedSql=preg_replace('/INSERT INTO products/i','INSERT IGNORE INTO products',$seedSql,1);
+      $p->exec($seedSql);
+      $sseed=$p->prepare("INSERT INTO store_settings(setting_key,setting_value) VALUES('demo_catalog_seeded','1') ON DUPLICATE KEY UPDATE setting_value='1'");
+      $sseed->execute();
+    }
+  }
+}
+$products=$p->query("SELECT id,name,category,price,image_url,image_url AS image,icon,details,featured FROM products WHERE active=1 ORDER BY featured DESC,id DESC")->fetchAll(PDO::FETCH_ASSOC);
   $categories=$p->query("SELECT name FROM categories WHERE active=1 ORDER BY sort_order,id")->fetchAll(PDO::FETCH_COLUMN);
   $settings=array_column($p->query("SELECT setting_key,setting_value FROM store_settings")->fetchAll(PDO::FETCH_ASSOC),'setting_value','setting_key');
   $agents=$p->query("SELECT id,name,phone,email,whatsapp,messenger FROM agents WHERE active=1 ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
