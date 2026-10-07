@@ -461,3 +461,18 @@ INSERT INTO products(name,category,price,image_url,details,featured,active) VALU
 ('Demo MSI Microwave Oven 112','Appliance',9050,'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=85','MSI · Genuine product · 1 year service support',0,1),
 ('Demo HP Air Fryer 113','Appliance',7950,'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=85','HP · Genuine product · 1 year service support',0,1),
 ('Demo Dell Electric Kettle 114','Appliance',8550,'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=85','Dell · Genuine product · 1 year service support',0,1);
+
+
+-- Premium storefront content controls
+CREATE TABLE IF NOT EXISTS offers(id INT AUTO_INCREMENT PRIMARY KEY,title VARCHAR(180) NOT NULL,subtitle VARCHAR(255),discount_text VARCHAR(80),image_url TEXT,link_url VARCHAR(255),type VARCHAR(40) DEFAULT 'offer',start_at DATETIME NULL,end_at DATETIME NULL,sort_order INT DEFAULT 0,active TINYINT(1) DEFAULT 1,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS reviews(id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(150) NOT NULL,rating TINYINT DEFAULT 5,review TEXT NOT NULL,sort_order INT DEFAULT 0,active TINYINT(1) DEFAULT 1,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS banners(id INT AUTO_INCREMENT PRIMARY KEY,title VARCHAR(180) NOT NULL,subtitle VARCHAR(255),image_url TEXT,link_url VARCHAR(255),position VARCHAR(40) DEFAULT 'hero',sort_order INT DEFAULT 0,active TINYINT(1) DEFAULT 1,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+INSERT INTO store_settings(setting_key,setting_value) VALUES
+('support_phone','+880 1XXX-XXXXXX'),('delivery_info','Fast delivery across Bangladesh. Delivery time depends on product and location.'),('store_address','Bangladesh'),('currency','৳')
+ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value);
+INSERT INTO offers(title,subtitle,discount_text,type,sort_order,active) VALUES
+('Launch Week Deals','Selected technology at special prices','UP TO 20% OFF','offer',1,1),
+('Happy Hour','Limited-time rotating offers','EXTRA 10% OFF','happy-hour',2,1),
+('PC Build Season','Components and complete setups','SAVE MORE','offer',3,1);
+INSERT INTO reviews(name,rating,review,sort_order,active) VALUES
+('Rafi',5,'Fast delivery and genuine products.',1,1),('Nila',5,'The product comparison saved me hours.',2,1),('Arman',5,'Easy checkout and helpful support.',3,1),('Sami',5,'Excellent PC parts and packaging.',4,1),('Tania',5,'Quick response from the support team.',5,1);
