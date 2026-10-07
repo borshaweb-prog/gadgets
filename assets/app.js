@@ -1,12 +1,39 @@
 let products=[],categories=[],settings={},agents=[],quickMessages=[],offers=[],reviews=[],banners=[],compare=[],cart=JSON.parse(localStorage.getItem('gadgets-cart')||'[]'),cat='All';
 const FALLBACK_CATS=['Desktop','Laptop','Component','Monitor','Power','Phone','Tablet','Office Equipment','Camera','Security','Networking','Software','Server & Storage','Accessories','Gadget','Gaming','TV','Appliance'];
 async function load(){
- try{const r=await fetch('api/products.php');const j=await r.json();products=j.products||[];categories=j.categories||[];settings=j.settings||{};agents=j.agents||[];quickMessages=j.quick||[];offers=j.offers||[];reviews=j.reviews||[];banners=j.banners||[]}catch(e){}
- if(!categories.length)categories=FALLBACK_CATS;
- if(!products.length)products=seedDemoProducts();
- render();applySettings();renderCampaigns();renderDeals();renderReviews();renderBanners()
-}
+  // Render the storefront immediately from the built-in catalog so a slow/unavailable
+  // database API can never leave Categories and Products blank.
+  categories=FALLBACK_CATS.slice();
+  products=seedDemoProducts();
+  render();
+  updateCart();
 
+  try{
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),5000);
+    const r=await fetch('api/products.php',{signal:controller.signal,cache:'no-store'});
+    clearTimeout(timer);
+    if(!r.ok)throw new Error('Products API HTTP '+r.status);
+    const j=await r.json();
+    if(Array.isArray(j.categories)&&j.categories.length)categories=j.categories;
+    if(Array.isArray(j.products)&&j.products.length)products=j.products;
+    settings=j.settings||settings;
+    agents=j.agents||agents;
+    quickMessages=j.quick||quickMessages;
+    offers=j.offers||offers;
+    reviews=j.reviews||reviews;
+    banners=j.banners||banners;
+  }catch(e){
+    // Keep the complete demo catalog and category list visible when the backend
+    // is temporarily unavailable. Admin/database data will replace it when ready.
+  }
+  render();
+  applySettings();
+  renderCampaigns();
+  renderDeals();
+  renderReviews();
+  renderBanners();
+}
 function seedDemoProducts(){
  const img={
   Desktop:'https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?auto=format&fit=crop&w=900&q=85',
