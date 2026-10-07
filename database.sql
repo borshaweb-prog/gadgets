@@ -476,3 +476,7 @@ INSERT INTO offers(title,subtitle,discount_text,type,sort_order,active) VALUES
 ('PC Build Season','Components and complete setups','SAVE MORE','offer',3,1);
 INSERT INTO reviews(name,rating,review,sort_order,active) VALUES
 ('Rafi',5,'Fast delivery and genuine products.',1,1),('Nila',5,'The product comparison saved me hours.',2,1),('Arman',5,'Easy checkout and helpful support.',3,1),('Sami',5,'Excellent PC parts and packaging.',4,1),('Tania',5,'Quick response from the support team.',5,1);
+
+INSERT INTO banners(title,subtitle,image_url,link_url,position,sort_order,active) VALUES
+('Performance without compromise','Build your next setup with powerful computers, laptops and components.','https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1600&q=85','shop.html','hero',1,1),
+('Happy Hour picks','Limited-time technology offers.','https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1600&q=85','deals.html','promo',2,1);
