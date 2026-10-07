@@ -9,7 +9,7 @@ try {
   $bn=preg_match('/[\x{0980}-\x{09FF}]/u',$message);
   $banglish=preg_match('/\b(ami|amake|amar|chai|lagbe|korbo|den|dao|koto|dam|ki|ache|ase|nibo|order|kinbo|product|laptop|computer|mobile|phone|budget)\b/i',$message);
   $mode=$bn?'bn':($banglish?'banglish':'en');
-  $map=['কম্পিউটার'=>'Desktop','কম্পিউটার'=>'Desktop','desktop'=>'Desktop','laptop'=>'Laptop','ল্যাপটপ'=>'Laptop','monitor'=>'Monitor','মনিটর'=>'Monitor','phone'=>'Phone','mobile'=>'Phone','মোবাইল'=>'Phone','tablet'=>'Tablet','camera'=>'Camera','ক্যামেরা'=>'Camera','gaming'=>'Gaming','গেমিং'=>'Gaming','keyboard'=>'Accessories','mouse'=>'Accessories','tv'=>'TV','টিভি'=>'TV','router'=>'Networking','ups'=>'Power'];
+  $map=['কম্পিউটার'=>'Desktop','desktop'=>'Desktop','laptop'=>'Laptop','ল্যাপটপ'=>'Laptop','monitor'=>'Monitor','মনিটর'=>'Monitor','phone'=>'Phone','mobile'=>'Phone','মোবাইল'=>'Phone','tablet'=>'Tablet','camera'=>'Camera','ক্যামেরা'=>'Camera','gaming'=>'Gaming','গেমিং'=>'Gaming','keyboard'=>'Accessories','mouse'=>'Accessories','tv'=>'TV','টিভি'=>'TV','router'=>'Networking','ups'=>'Power'];
   foreach($map as $k=>$v) if(mb_stripos($low,$k)!==false) $low.=' '.$v;
   $words=array_values(array_filter(preg_split('/[^\p{L}\p{N}]+/u',$low),fn($w)=>mb_strlen($w,'UTF-8')>2));
   $clauses=[];$args=[];
@@ -17,7 +17,7 @@ try {
   $found=[];
   if($clauses){$s=$p->prepare('SELECT id,name,category,price,image_url,details FROM products WHERE active=1 AND ('.implode(' OR ',$clauses).') ORDER BY featured DESC,id DESC LIMIT 8');$s->execute($args);$found=$s->fetchAll(PDO::FETCH_ASSOC);}
   $store=$p->query("SELECT setting_key,setting_value FROM store_settings")->fetchAll(PDO::FETCH_KEY_PAIR);
-  $intentOrder=(bool)preg_match('/\b(order|buy|kinbo|nibo|niben|order korbo|অর্ডার|কিনব|নেব|নিতে চাই)\b/i',$message);
+  $intentOrder=(bool)(preg_match('/\b(order|buy|kinbo|nibo|niben|order korbo)\b/i',$message)||preg_match('/অর্ডার|কিনব|নেব|নিতে চাই|অর্ডার করব/u',$message));
   $reply='';
   if($found){
     $list=implode("\n",array_map(fn($x)=>'• '.$x['name'].' — ৳'.number_format((float)$x['price']).' | '.$x['details'],array_slice($found,0,5)));
