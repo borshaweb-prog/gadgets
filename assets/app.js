@@ -84,7 +84,7 @@ function seedDemoProducts(){
   Appliance:['LG DualCool AC 1.5 Ton','Samsung WindFree AC 1.5 Ton','Daikin Inverter AC 1.5 Ton','Walton Inverter AC 1.5 Ton','LG 260L Refrigerator','Samsung 253L Refrigerator','Whirlpool 265L Refrigerator','Panasonic Microwave NN-ST34','Samsung Air Fryer 4.5L','Philips Air Fryer HD9252','Miyako Electric Kettle','Singer Washing Machine 7KG','LG Front Load Washer 8KG','Samsung Bespoke Oven','Xiaomi Smart Air Purifier 4']
  };
  let id=900000;const out=[];
- Object.keys(names).forEach(catName=>names[catName].forEach((name,i)=>out.push({id:id++,name,category:catName,price:Math.round((2500+i*1350+(catName==='Desktop'?i*1800:catName==='Laptop'?i*1200:0))/50)*50,image:img[catName],details:'Genuine brand model · New stock · Warranty support',featured:i<3?1:0}));
+ Object.keys(names).forEach(catName=>names[catName].forEach((name,i)=>out.push({id:id++,name,category:catName,price:Math.round((2500+i*1350+(catName==='Desktop'?i*1800:catName==='Laptop'?i*1200:0))/50)*50,image:img[catName],details:'Genuine brand model · New stock · Warranty support',featured:i<3?1:0})));
  return out;
 }
 
