@@ -44,39 +44,17 @@
 <div id="modal" class="modal" aria-hidden="true"><div class="modalbox"><div class="modalhead"><b id="modalTitle"></b><button class="close" onclick="closeModal()" aria-label="Close">×</button></div><div id="options" class="options"></div></div></div>
 <script>
 const parts={
-CPU:[
-['AMD Ryzen 5 5600',13500,65],['AMD Ryzen 5 7600',23500,65],['AMD Ryzen 7 7700',31500,65],['AMD Ryzen 7 7800X3D',52000,120],['AMD Ryzen 9 7900X',57500,170],['AMD Ryzen 9 7950X',72000,170],['Intel Core i5-12400F',14500,65],['Intel Core i5-14400F',25500,65],['Intel Core i7-14700K',46500,125],['Intel Core i9-14900K',63500,253]
-],
-'CPU Cooler':[
-['DeepCool AG400',2200,6],['DeepCool AK400',3200,8],['Cooler Master Hyper 212',3900,10],['DeepCool AK620',7200,12],['Thermalright Peerless Assassin 120',6500,12],['Cooler Master ML240L',7200,14],['NZXT Kraken 240',14500,15],['DeepCool LS520 SE',9500,15]
-],
-Motherboard:[
-['MSI B550M PRO-VDH WIFI',14500,55],['Gigabyte B650M DS3H',16500,55],['ASRock B650M-HDV/M.2',17500,55],['MSI B650 Gaming Plus WIFI',22000,60],['Gigabyte B650 AORUS Elite AX',28500,65],['ASUS TUF Gaming B650-PLUS WIFI',29500,65],['MSI MAG Z790 Tomahawk WIFI',38500,70],['Gigabyte Z790 AORUS Elite AX',36500,70]
-],
-RAM:[
-['Corsair Vengeance 16GB DDR4',4800,5],['Corsair Vengeance 16GB DDR5',6500,5],['Kingston Fury Beast 16GB DDR5',6200,5],['Corsair Vengeance 32GB DDR5',12500,6],['Kingston Fury Beast 32GB DDR5',13200,6],['G.Skill Ripjaws S5 32GB DDR5',13800,6],['Corsair Vengeance 64GB DDR5',24500,8],['G.Skill Trident Z5 64GB DDR5',28500,8]
-],
-Storage:[
-['WD Blue SN580 1TB NVMe',7500,5],['WD Black SN770 1TB NVMe',8500,5],['Samsung 990 EVO 1TB',10500,6],['Samsung 990 PRO 1TB',12500,6],['Kingston KC3000 2TB',16500,7],['WD Black SN850X 2TB',20500,7],['Samsung 990 PRO 2TB',20500,7],['Seagate Barracuda 2TB HDD',7200,6],['Seagate IronWolf 4TB HDD',14500,8]
-],
-'Graphics Card':[
-['ASUS Dual RTX 4060 8GB',38000,115],['MSI RTX 4060 Ti 8GB',48500,160],['Gigabyte RTX 4070 12GB',78000,200],['ASUS TUF RTX 4070 SUPER 12GB',85000,220],['MSI RTX 4070 Ti SUPER 16GB',108000,285],['Gigabyte RTX 4080 SUPER 16GB',145000,320],['ASUS TUF RTX 4090 24GB',235000,450],['Sapphire RX 7600 8GB',41000,165],['Sapphire RX 7800 XT 16GB',72000,250],['Sapphire RX 7900 XTX 24GB',125000,355]
-],
-'Power Supply':[
-['Cooler Master MWE 550 Bronze',5200,0],['Corsair CX650 650W Bronze',6500,0],['Cooler Master MWE 650 Gold',8500,0],['Corsair RM750e 750W Gold',10500,0],['Seasonic Focus GX-750',11500,0],['Corsair RM850x 850W Gold',14500,0],['Seasonic Vertex GX-1000',24500,0],['Corsair RM1200x 1200W Gold',28500,0]
-],
-Case:[
-['Value-Top VT-MX10 Airflow',4500,0],['Antec NX410',5800,0],['DeepCool CC560',6200,0],['Airflow Mid Tower',6500,0],['NZXT H5 Flow',10500,0],['Lian Li LANCOOL 216',14500,0],['Corsair 4000D Airflow',12500,0],['Fractal Design North',18500,0]
-],
-Monitor:[
-['AOC 24G2SP 24" 1080p',18000,30],['LG UltraGear 24GN60R 24"',19500,30],['Dell G2724D 27" 1440p',36000,35],['LG UltraGear 27GR75Q 27"',39000,35],['ASUS TUF VG27AQ 27"',42000,40],['Gigabyte M27Q 27"',45000,40],['Samsung Odyssey G5 32"',52000,45],['LG UltraGear 32GS95UE OLED',125000,60]
-],
-Keyboard:[
-['A4Tech KR-85 USB Keyboard',1200,2],['Logitech K120',1500,2],['Redragon K552 Kumara',4200,3],['Keychron K8 Pro',6550,3],['Logitech MX Keys S',10500,3],['Razer BlackWidow V4',14500,4],['Logitech G Pro X TKL',17500,4],['Corsair K70 RGB PRO',19500,4]
-],
-Mouse:[
-['A4Tech OP-720',700,1],['Logitech B100',850,1],['Logitech G102 Lightsync',2200,2],['Razer DeathAdder Essential',2800,2],['Logitech MX Master 3S',9500,2],['Razer DeathAdder V3',11200,2],['Logitech G Pro X Superlight 2',14500,2],['Razer Basilisk V3 Pro',16500,3]
-]
+CPU:[['AMD Ryzen 5 5600',13500,65],['AMD Ryzen 5 7600',23500,65],['AMD Ryzen 7 7700',31500,65],['AMD Ryzen 7 7800X3D',52000,120],['AMD Ryzen 9 7900X',57500,170],['AMD Ryzen 9 7950X',72000,170],['Intel Core i5-12400F',14500,65],['Intel Core i5-14400F',25500,65],['Intel Core i7-14700K',46500,125],['Intel Core i9-14900K',63500,253]],
+'CPU Cooler':[['DeepCool AG400',2200,6],['DeepCool AK400',3200,8],['Cooler Master Hyper 212',3900,10],['DeepCool AK620',7200,12],['Thermalright Peerless Assassin 120',6500,12],['Cooler Master ML240L',7200,14],['NZXT Kraken 240',14500,15],['DeepCool LS520 SE',9500,15],['Arctic Liquid Freezer III 240',12500,15],['be quiet! Pure Rock 2',6200,10]],
+Motherboard:[['MSI B550M PRO-VDH WIFI',14500,55],['Gigabyte B650M DS3H',16500,55],['ASRock B650M-HDV/M.2',17500,55],['MSI B650 Gaming Plus WIFI',22000,60],['Gigabyte B650 AORUS Elite AX',28500,65],['ASUS TUF Gaming B650-PLUS WIFI',29500,65],['MSI MAG Z790 Tomahawk WIFI',38500,70],['Gigabyte Z790 AORUS Elite AX',36500,70],['ASUS ROG Strix B650E-F Gaming WIFI',41000,70],['ASRock Z790 Steel Legend WIFI',39500,70]],
+RAM:[['Corsair Vengeance 16GB DDR4',4800,5],['Corsair Vengeance 16GB DDR5',6500,5],['Kingston Fury Beast 16GB DDR5',6200,5],['Corsair Vengeance 32GB DDR5',12500,6],['Kingston Fury Beast 32GB DDR5',13200,6],['G.Skill Ripjaws S5 32GB DDR5',13800,6],['Corsair Vengeance 64GB DDR5',24500,8],['G.Skill Trident Z5 64GB DDR5',28500,8],['TeamGroup T-Force Delta RGB 32GB DDR5',14500,6],['Kingston Fury Renegade 32GB DDR5',15200,6]],
+Storage:[['WD Blue SN580 1TB NVMe',7500,5],['WD Black SN770 1TB NVMe',8500,5],['Samsung 990 EVO 1TB',10500,6],['Samsung 990 PRO 1TB',12500,6],['Kingston KC3000 2TB',16500,7],['WD Black SN850X 2TB',20500,7],['Samsung 990 PRO 2TB',20500,7],['Seagate Barracuda 2TB HDD',7200,6],['Seagate IronWolf 4TB HDD',14500,8],['Crucial P3 Plus 2TB NVMe',14500,6]],
+'Graphics Card':[['ASUS Dual RTX 4060 8GB',38000,115],['MSI RTX 4060 Ti 8GB',48500,160],['Gigabyte RTX 4070 12GB',78000,200],['ASUS TUF RTX 4070 SUPER 12GB',85000,220],['MSI RTX 4070 Ti SUPER 16GB',108000,285],['Gigabyte RTX 4080 SUPER 16GB',145000,320],['ASUS TUF RTX 4090 24GB',235000,450],['Sapphire RX 7600 8GB',41000,165],['Sapphire RX 7800 XT 16GB',72000,250],['Sapphire RX 7900 XTX 24GB',125000,355]],
+'Power Supply':[['Cooler Master MWE 550 Bronze',5200,0],['Corsair CX650 650W Bronze',6500,0],['Cooler Master MWE 650 Gold',8500,0],['Corsair RM750e 750W Gold',10500,0],['Seasonic Focus GX-750',11500,0],['Corsair RM850x 850W Gold',14500,0],['Seasonic Vertex GX-1000',24500,0],['Corsair RM1200x 1200W Gold',28500,0],['Cooler Master MWE Gold 850 V2',12500,0],['be quiet! Pure Power 12 M 850W',14500,0]],
+Case:[['Value-Top VT-MX10 Airflow',4500,0],['Antec NX410',5800,0],['DeepCool CC560',6200,0],['Airflow Mid Tower',6500,0],['NZXT H5 Flow',10500,0],['Lian Li LANCOOL 216',14500,0],['Corsair 4000D Airflow',12500,0],['Fractal Design North',18500,0],['Montech AIR 903 MAX',8500,0],['Cooler Master TD500 Mesh V2',11500,0]],
+Monitor:[['AOC 24G2SP 24" 1080p',18000,30],['LG UltraGear 24GN60R 24"',19500,30],['Dell G2724D 27" 1440p',36000,35],['LG UltraGear 27GR75Q 27"',39000,35],['ASUS TUF VG27AQ 27"',42000,40],['Gigabyte M27Q 27"',45000,40],['Samsung Odyssey G5 32"',52000,45],['LG UltraGear 32GS95UE OLED',125000,60],['MSI G274QPF-QD 27"',48000,40],['AOC CQ32G2S 32" Curved',42000,45]],
+Keyboard:[['A4Tech KR-85 USB Keyboard',1200,2],['Logitech K120',1500,2],['Redragon K552 Kumara',4200,3],['Keychron K8 Pro',6550,3],['Logitech MX Keys S',10500,3],['Razer BlackWidow V4',14500,4],['Logitech G Pro X TKL',17500,4],['Corsair K70 RGB PRO',19500,4],['Royal Kludge RK84',5200,3],['Akko 5075B Plus',8500,3]],
+Mouse:[['A4Tech OP-720',700,1],['Logitech B100',850,1],['Logitech G102 Lightsync',2200,2],['Razer DeathAdder Essential',2800,2],['Logitech MX Master 3S',9500,2],['Razer DeathAdder V3',11200,2],['Logitech G Pro X Superlight 2',14500,2],['Razer Basilisk V3 Pro',16500,3],['Logitech G502 X',12500,2],['SteelSeries Rival 5',6500,2]]
 };
 const required=['CPU','Motherboard','RAM','Storage','Graphics Card','Power Supply'];
 const icons={CPU:'▣','CPU Cooler':'◉',Motherboard:'▦',RAM:'▥',Storage:'▰','Graphics Card':'▰','Power Supply':'⚡',Case:'▤',Monitor:'▤',Keyboard:'⌨',Mouse:'⌁'};
@@ -92,9 +70,9 @@ function render(){
  update();
 }
 function openOptions(t){
- document.getElementById('modalTitle').textContent='Choose '+t;
+ if(!parts[t]||!parts[t].length){alert('No products available for '+t);return} document.getElementById('modalTitle').textContent='Choose '+t+' · '+parts[t].length+' products';
  document.getElementById('options').innerHTML=parts[t].map(function(x,i){
-  return '<button class="option" onclick="pick('+JSON.stringify(t)+','+i+')"><b>'+esc(x[0])+'</b><strong>৳'+x[1].toLocaleString()+'</strong><small>Estimated power: '+x[2]+'W</small><span class="meta">Genuine product · Warranty support</span></button>';
+  return '<button type="button" class="option" onclick="pick('+JSON.stringify(t)+','+i+')"><b>'+esc(x[0])+'</b><strong>৳'+x[1].toLocaleString()+'</strong><small>Estimated power: '+x[2]+'W</small><span class="meta">Genuine product · Warranty support</span></button>';
  }).join('');
  document.getElementById('modal').classList.add('open');
  document.getElementById('modal').setAttribute('aria-hidden','false');
