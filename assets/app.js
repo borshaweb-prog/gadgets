@@ -8,40 +8,11 @@ try{
   try{localStorage.removeItem('gadgets-cart')}catch(_){}
 }
 const FALLBACK_CATS=['Desktop','Laptop','Component','Monitor','Power','Phone','Tablet','Office Equipment','Camera','Security','Networking','Software','Server & Storage','Accessories','Gadget','Gaming','TV','Appliance'];
-async function load(){
-  // Render the storefront immediately from the built-in catalog so a slow/unavailable
-  // database API can never leave Categories and Products blank.
-  categories=FALLBACK_CATS.slice();
-  products=seedDemoProducts();
-  render();
-  updateCart();
+const LOCAL_ADMIN_KEY='gadgets-admin-state';
+function readLocalAdminState(){try{const raw=localStorage.getItem(LOCAL_ADMIN_KEY);return raw?JSON.parse(raw):null}catch(e){return null}}
+function applyLocalAdminState(){const s=readLocalAdminState();if(!s)return false;if(Array.isArray(s.categories)&&s.categories.length)categories=s.categories.filter(x=>x.active!==0&&x.active!=='0').map(x=>x.name||x);if(Array.isArray(s.products)&&s.products.length)products=s.products.filter(x=>x.active!==0&&x.active!=='0');if(s.settings)settings={...settings,...s.settings};if(Array.isArray(s.agents))agents=s.agents.filter(x=>x.active!==0&&x.active!=='0');if(Array.isArray(s.quick))quickMessages=s.quick.map(x=>x.message||x);if(Array.isArray(s.offers))offers=s.offers.filter(x=>x.active!==0&&x.active!=='0');if(Array.isArray(s.reviews))reviews=s.reviews.filter(x=>x.active!==0&&x.active!=='0');if(Array.isArray(s.banners))banners=s.banners.filter(x=>x.active!==0&&x.active!=='0');return true}
 
-  try{
-    const controller=new AbortController();
-    const timer=setTimeout(()=>controller.abort(),5000);
-    const r=await fetch('api/products.php',{signal:controller.signal,cache:'no-store'});
-    clearTimeout(timer);
-    if(!r.ok)throw new Error('Products API HTTP '+r.status);
-    const j=await r.json();
-    if(Array.isArray(j.categories)&&j.categories.length)categories=j.categories;
-    if(Array.isArray(j.products)&&j.products.length)products=j.products;
-    settings=j.settings||settings;
-    agents=j.agents||agents;
-    quickMessages=j.quick||quickMessages;
-    offers=j.offers||offers;
-    reviews=j.reviews||reviews;
-    banners=j.banners||banners;
-  }catch(e){
-    // Keep the complete demo catalog and category list visible when the backend
-    // is temporarily unavailable. Admin/database data will replace it when ready.
-  }
-  render();
-  applySettings();
-  renderCampaigns();
-  renderDeals();
-  renderReviews();
-  renderBanners();
-}
+async function load(){const hasLocal=applyLocalAdminState();if(!hasLocal){categories=FALLBACK_CATS.slice();products=seedDemoProducts()}render();updateCart();try{const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),5000);const r=await fetch('api/products.php',{signal:controller.signal,cache:'no-store'});clearTimeout(timer);if(!r.ok)throw new Error('Products API HTTP '+r.status);const j=await r.json();if(Array.isArray(j.categories)&&j.categories.length)categories=j.categories;if(Array.isArray(j.products)&&j.products.length)products=j.products;settings=j.settings||settings;agents=j.agents||agents;quickMessages=j.quick||quickMessages;offers=j.offers||offers;reviews=j.reviews||reviews;banners=j.banners||banners}catch(e){}applyLocalAdminState();render();applySettings();renderCampaigns();renderDeals();renderReviews();renderBanners()}
 function seedDemoProducts(){
  const img={
   Desktop:'https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?auto=format&fit=crop&w=900&q=85',
@@ -123,5 +94,5 @@ function showAssistantOrderForm(){const m=document.getElementById('messages');if
 async function submitAssistantOrder(){const items=cart;if(!items.length){appendBot('Your cart is empty. Please choose a product first.');return}const d={name:document.getElementById('aiName')?.value.trim(),phone:document.getElementById('aiPhone')?.value.trim(),email:document.getElementById('aiEmail')?.value.trim(),address:document.getElementById('aiAddress')?.value.trim(),payment:document.getElementById('aiPayment')?.value,items};if(!d.name||!d.phone||!d.email||!d.address){appendBot('Please complete your name, phone, email and delivery address.');return}try{const r=await fetch('api/orders.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});const j=await r.json();if(j.success){cart=[];save();appendBot('<b>Order received successfully.</b><br>Order ID: '+j.order_id+'<br>Our team will contact you for confirmation.')}else appendBot(j.error||'Could not place the order.')}catch(e){appendBot('Order service is unavailable right now. Please try again.')}}
 function appendBot(html){const m=document.getElementById('messages');if(m){m.innerHTML+='<div class="bot">'+html+'</div>';m.scrollTop=m.scrollHeight}}
 async function askAI(){const i=document.getElementById('chatInput'),q=i?.value.trim();if(!q)return;const m=document.getElementById('messages');m.innerHTML+='<div class="user">'+q+'</div>';i.value='';try{const r=await fetch('api/assistant.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,cart})});const j=await r.json();appendBot(String(j.answer||'Please tell me what you need.').replaceAll('\n','<br>'));if(j.order_intent&&j.matches?.length){add(j.matches[0].id);appendBot('<b>Product added to cart.</b><br>I can take the order here. Please provide your customer details below.');showAssistantOrderForm()}}catch(e){appendBot('Sorry, assistant connection failed. Please try again or contact an agent.')}}
-function applySettings(){const s=settings||{};document.querySelectorAll('[data-social]').forEach(a=>{const k=a.dataset.social;if(s[k])a.href=s[k];else a.style.display='none'});document.querySelectorAll('[data-store-name]').forEach(e=>e.textContent=s.store_name||'Gadgets');const first=agents[0],link=document.getElementById('agentLink');if(link&&first){link.href=first.whatsapp||first.messenger||('mailto:'+(first.email||s.support_email||''));link.textContent='Contact '+first.name}}
+function applySettings(){const s=settings||{};document.querySelectorAll('[data-social]').forEach(a=>{const k=a.dataset.social;a.href=s[k]||'#';a.style.display='';a.setAttribute('aria-label',k)});document.querySelectorAll('[data-store-name]').forEach(e=>e.textContent=s.store_name||'Gadgets');const first=agents[0],link=document.getElementById('agentLink');if(link&&first){link.href=first.whatsapp||first.messenger||('mailto:'+(first.email||s.support_email||''));link.textContent='Contact '+first.name}}
 document.addEventListener('DOMContentLoaded',()=>{const urlCat=new URLSearchParams(location.search).get('cat');if(urlCat){cat=decodeURIComponent(urlCat);window.filterCategory=cat;}document.getElementById('search')?.addEventListener('input',render);document.getElementById('sort')?.addEventListener('change',render);document.querySelector('.searchbox button')?.addEventListener('click',render);load();updateCart()});
