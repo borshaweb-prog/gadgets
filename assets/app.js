@@ -1,4 +1,12 @@
-let products=[],categories=[],settings={},agents=[],quickMessages=[],offers=[],reviews=[],banners=[],compare=[],cart=JSON.parse(localStorage.getItem('gadgets-cart')||'[]'),cat='All';
+let products=[],categories=[],settings={},agents=[],quickMessages=[],offers=[],reviews=[],banners=[],compare=[],cat='All';
+let cart=[];
+try{
+  const saved=JSON.parse(localStorage.getItem('gadgets-cart')||'[]');
+  cart=Array.isArray(saved)?saved:[];
+}catch(e){
+  cart=[];
+  try{localStorage.removeItem('gadgets-cart')}catch(_){}
+}
 const FALLBACK_CATS=['Desktop','Laptop','Component','Monitor','Power','Phone','Tablet','Office Equipment','Camera','Security','Networking','Software','Server & Storage','Accessories','Gadget','Gaming','TV','Appliance'];
 async function load(){
   // Render the storefront immediately from the built-in catalog so a slow/unavailable
